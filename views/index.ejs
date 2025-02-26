@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Productos</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Catálogo de Productos</h1>
+        <div class="auth-container">
+            <% if (locals.user) { %>
+                <span class="user-name">Bienvenido, <%= user.fullname %></span>
+                <% if (user.role === 'admin') { %>
+                    <a href="/dashboard" class="btn btn-primary">Administrador</a>
+                <% } %>
+                <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary">Iniciar Sesión</a>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="catalogo">
+        <% if (products.length > 0) { %>
+            <% products.forEach(product => { %>
+                <div class="producto">
+                    <img class="product-image" src="uploads/products/<%= product.image %>" alt="<%= product.name %>">
+                    <h3><%= product.name %></h3>
+                    <p><%= product.description %></p>
+                    <p><strong>Stock:</strong> <%= product.stock %></p>
+                    <% if (locals.user) { %>
+                        <p><strong>Precio:</strong> $<%= product.price %></p>
+                    <% } else { %>
+                        <p><strong>Inicia sesión para ver el precio</strong></p>
+                    <% } %>
+                    <button class="btn btn-info" onclick="openModal('<%= product._id %>')">Ficha Técnica</button>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No hay productos disponibles.</p>
+        <% } %>
+    </div>
+
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Descargar Ficha Técnica</h2>
+            <p>Por favor, ingresa tu correo electrónico para descargar la ficha técnica:</p>
+            
+            <form id="emailForm" action="/send-email" method="post">
+                <input type="hidden" id="productIdInput" name="productId" value="">
+                
+                <div class="form-group">
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-danger" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/modal.js"></script>
+    <script src="/js/products.js"></script>
+</body>
+</html>

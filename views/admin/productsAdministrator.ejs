@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Gestión de Productos</title>
+</head>
+<body>
+    <div class="header-container">
+        <h1>Gestión de Productos</h1>
+        <div class="auth-container">
+            <span class="user-name">Bienvenido, <%= user.fullname %></span>
+            <a href="/" class="btn btn-primary">Principal Page</a>
+            <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <form id="productForm" enctype="multipart/form-data">
+        <div class="details-product">
+            <div class="details-product-input">
+                <input type="hidden" id="productId">
+            <input type="text" id="name" placeholder="Nombre del producto" required>
+            
+            <input type="number" id="price" placeholder="Precio" required>
+            <input type="number" id="stock" placeholder="Stock" required>
+            <input type="file" id="image" accept="image/*">
+            </div>
+            
+            <div class="buttons-product">
+                <button type="submit">Guardar Producto</button>
+                <button type="button" id="clearForm">Limpiar</button>
+            </div>
+        </div>
+        <div class="details-product">
+            <textarea id="description" placeholder="Descripción" required></textarea>
+        </div>
+    </form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                    <th>Status</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(product => { %>
+                    <tr data-id="<%= product._id %>">
+                        <td><%= product.codigo %></td>
+                        <td><%= product.name %></td>
+                        <td><%= product.description %></td>
+                        <td><%= product.stock %></td>
+                        <td>$<%= product.price %></td>
+                        <td><%= product.status %></td>
+                        <td><img src="/uploads/products/<%= product.image %>" alt="<%= product.name %>" class="product-image-list"></td>
+                        <td>
+                            <button class="edit" onclick="editProduct('<%= product._id %>', '<%= product.name %>', '<%= product.description %>', '<%= product.price %>', '<%= product.stock %>', '<%= product.image %>')">Editar</button>
+                            <button class="delete" onclick="deleteProduct('<%= product._id %>')">Eliminar</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/js/products.js"></script>
+</body>
+</html>

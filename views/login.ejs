@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="main">
+        
+    <form action="/login" method="POST">
+        <h2>Iniciar Sesión</h2>
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+        <input type="email" name="email" placeholder="Correo" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Ingresar</button>
+        <p>¿No tienes cuenta? <a href="/register">Regístrate</a></p>
+    </form>
+    
+    </div>
+    
+</body>
+</html>
