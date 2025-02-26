@@ -1,5 +1,5 @@
 # Sistema de Gestión de Productos
-> **Nota:** Para experimentar la experiencia del Admin, importa el json de Admin en tu Mongo DB. Si deseas tambien puedes importar los demás json para una experiencia más rápida.
+> **Nota:** Para experimentar la experiencia del Admin, importa el json de Admin de la carpeta "importData" en tu Mongo DB. Si deseas tambien puedes importar los demás json para una experiencia más rápida.
 > 
 ## Descripción General
 
