@@ -118,3 +118,8 @@ El sistema está diseñado para ser fácilmente ampliado con:
 - Sistema de notificaciones
 - Módulo de seguimiento de leads
 - Integración con sistemas de email marketing
+
+## Ejecución
+
+El sistema está diseñado para ser fácilmente ejecutado con:
+- node app.js
