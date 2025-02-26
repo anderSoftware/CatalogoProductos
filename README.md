@@ -2,7 +2,7 @@
 > **Nota:** Para experimentar la experiencia del Admin, importa el json de Admin de la carpeta "importData" en tu Mongo DB. Las contraseñas del Admin y Usuarios importados es 123456 Si deseas tambien puedes importar los demás json para una experiencia más rápida.
 
 ### PRESENTACIÓN EN VIDEO
-[[CLICK HERE](https://youtu.be/Q98PljcbaEs)]
+[[VIDEO AQUÍ](https://youtu.be/Q98PljcbaEs)]
 
 ## Descripción General
 
