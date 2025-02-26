@@ -121,5 +121,6 @@ El sistema está diseñado para ser fácilmente ampliado con:
 
 ## Ejecución
 
-El sistema está diseñado para ser fácilmente ejecutado con el siguiente comando:
+El sistema está diseñado para ser fácilmente ejecutado los siguientes comandos en orden:
+- npm install
 - node app.js
