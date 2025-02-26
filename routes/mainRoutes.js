@@ -105,72 +105,103 @@ router.put('/delete-products/:id', isAuthenticated, async (req, res) => {
 
 
 router.get('/download-pdf/:id', async (req, res) => {
-  try {
+    try {
       const product = await Product.findById(req.params.id);
       if (!product) {
-          return res.status(404).json({ error: 'Producto no encontrado' });
+        return res.status(404).json({ error: 'Producto no encontrado' });
       }
-
+  
       const doc = new PDFDocument();
       const filename = `ficha-tecnica-${product.name}.pdf`;
+      
       res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
       res.setHeader('Content-type', 'application/pdf');
       doc.pipe(res);
-
+  
       doc.fontSize(24)
-         .font('Helvetica-Bold')
-         .text('FICHA TÉCNICA', { align: 'center' });
-      
+        .font('Helvetica-Bold')
+        .text('FICHA TÉCNICA', { align: 'center' });
       doc.moveDown();
-
+      
       doc.fontSize(18)
-         .font('Helvetica-Bold')
-         .text(product.name, { align: 'center' });
-      
+        .font('Helvetica-Bold')
+        .text(product.name, { align: 'center' });
       doc.moveDown();
-
-      const tableTop = 200;
-      const columnWidth = 150;
-      const rowHeight = 30;
-      let currentTop = tableTop;
-
-      function drawTableRow(label, value, isHeader = false) {
-          doc.rect(50, currentTop, columnWidth * 2, rowHeight).stroke();
-          doc.moveTo(50 + columnWidth, currentTop).lineTo(50 + columnWidth, currentTop + rowHeight).stroke();
-
-          doc.fontSize(12).font(isHeader ? 'Helvetica-Bold' : 'Helvetica');
-          doc.text(label, 60, currentTop + 8, { width: columnWidth - 20 });
-          doc.text(value, 60 + columnWidth, currentTop + 8, { width: columnWidth - 20 });
-
-          currentTop += rowHeight;
-      }
-
+  
       const fechaCreacion = product.createdAt ? new Date(product.createdAt).toLocaleDateString() : 'N/A';
       const fechaActualizacion = product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : 'N/A';
-
+      
       const tableData = [
-          ['Característica', 'Detalle'],
-          ['Código', product.codigo],
-          ['Descripción', product.description],
-          ['Precio', `$${product.price}`],
-          ['Stock', product.stock],
-          ['Categoría', product.category || 'N/A'],
-          ['Fecha de Creación', fechaCreacion],
-          ['Fecha de Actualización', fechaActualizacion]
+        ['Característica', 'Detalle'],
+        ['Código', product.codigo || 'N/A'],
+        ['Descripción', product.description || 'N/A'],
+        ['Precio', `$${product.price}` || 'N/A'],
+        ['Stock', product.stock.toString() || 'N/A'],
+        ['Categoría', product.category || 'N/A'],
+        ['Fecha de Creación', fechaCreacion],
+        ['Fecha de Actualización', fechaActualizacion]
       ];
+  
+      const margins = { left: 50, right: 50 };
+      const tableWidth = doc.page.width - margins.left - margins.right;
+      const colWidths = [tableWidth * 0.4, tableWidth * 0.6]; 
+      
+      function calculateTextHeight(text, fontSize, fontWidth, maxWidth) {
+        const characterWidth = fontSize * fontWidth;
+        const characters = maxWidth / characterWidth;
+        const lines = Math.ceil(text.length / characters);
+        return lines * (fontSize * 1.2); 
+      }
 
-      tableData.forEach((row, index) => {
-          drawTableRow(row[0], row[1], index === 0);
+      let y = 200; 
+      
+      tableData.forEach((row, rowIndex) => {
+        doc.fontSize(12).font(rowIndex === 0 ? 'Helvetica-Bold' : 'Helvetica');
+        
+        const textHeight1 = calculateTextHeight(row[0], 12, 0.6, colWidths[0] - 20);
+        const textHeight2 = calculateTextHeight(row[1], 12, 0.6, colWidths[1] - 20);
+        const rowHeight = Math.max(30, textHeight1, textHeight2) + 16; 
+        
+        if (rowIndex % 2 === 1) {
+          doc.fillColor('#f5f5f5')
+             .rect(margins.left, y, tableWidth, rowHeight)
+             .fill();
+        }
+        
+        doc.strokeColor('#000000')
+           .rect(margins.left, y, tableWidth, rowHeight)
+           .stroke();
+        
+        doc.moveTo(margins.left + colWidths[0], y)
+           .lineTo(margins.left + colWidths[0], y + rowHeight)
+           .stroke();
+    
+        doc.fillColor('#000000')
+           .text(row[0], margins.left + 10, y + 8, { 
+              width: colWidths[0] - 20,
+              align: 'left'
+           });
+           
+        doc.text(row[1], margins.left + colWidths[0] + 10, y + 8, { 
+              width: colWidths[1] - 20,
+              align: 'left'
+           });
+        
+        y += rowHeight;
+        if (y > doc.page.height - 50) {
+          doc.addPage();
+          y = 50;
+        }
       });
-
-      doc.fontSize(10).text('Documento generado automáticamente', 50, 700, { align: 'center' });
-
+  
+      doc.fontSize(10).text('Documento generado automáticamente', 0, 700, { align: 'center' });
+      
       doc.end();
-  } catch (error) {
+    } catch (error) {
       console.error('Error al generar PDF:', error);
       res.status(500).json({ error: 'Error al generar el PDF' });
-  }
-});
+    }
+  });
 
 router.post('/send-email', async (req, res) => {
     try {
