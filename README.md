@@ -1,10 +1,10 @@
 # Sistema de Gestión de Productos
-
+> **Nota:** Recuerda no subir archivos `.env` a repositorios públicos.
+> 
 ## Descripción General
 
 Esta aplicación es un sistema de gestión de productos que permite a los administradores manejar un catálogo de productos mientras que los usuarios pueden visualizarlos y descargar sus fichas técnicas. La plataforma está desarrollada con Node.js, Express y MongoDB, ofreciendo una solución completa para la gestión de inventario y distribución de información técnica.
 
-> **Nota:** Recuerda no subir archivos `.env` a repositorios públicos.
 
 ## Funcionalidades Principales
 
