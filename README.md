@@ -1,6 +1,9 @@
 # Sistema de Gestión de Productos
 > **Nota:** Para experimentar la experiencia del Admin, importa el json de Admin de la carpeta "importData" en tu Mongo DB. Las contraseñas del Admin y Usuarios importados es 123456 Si deseas tambien puedes importar los demás json para una experiencia más rápida.
 
+### PRESENTACIÓN EN VIDEO
+[[CLICK HERE](https://youtu.be/Q98PljcbaEs)]
+
 ## Descripción General
 
 Esta aplicación es un sistema de gestión de productos que permite a los administradores manejar un catálogo de productos mientras que los usuarios pueden visualizarlos y descargar sus fichas técnicas. La plataforma está desarrollada con Node.js, Express y MongoDB, ofreciendo una solución completa para la gestión de inventario y distribución de información técnica.
