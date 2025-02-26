@@ -194,7 +194,6 @@ router.get('/download-pdf/:id', async (req, res) => {
         }
       });
   
-      doc.fontSize(10).text('Documento generado automáticamente', 0, 700, { align: 'center' });
       
       doc.end();
     } catch (error) {
